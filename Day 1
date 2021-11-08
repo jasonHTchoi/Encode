@@ -1,0 +1,41 @@
+//SPDX-License-Identifier: GPL-3.0 
+pragma solidity ^0.8.0;
+
+contract Score {
+    
+//this contract lets you set a score setScore, which then getScore will read and print integer
+
+ uint public score;
+ 
+ address owner;
+ 
+ modifier onlyOwner() {
+     if(msg.sender==owner){
+         _;
+     }
+ }
+// modifiers wrap around a function
+// if statement lets you set conditionals around contract
+// _ defines where the function goes
+// this modifier notes that if we satisfy the condition noted, then the function will execute!
+// e.g. whitelist, but expensive way since you need 1 modifier for each whitelist. there are other ways to do this
+// msg.sender is a global variable, i.e. address of person calling the function
+
+event ScoreSet (uint);
+//events can be seen by external processors
+//
+
+constructor() {
+    score = 5;
+    owner = msg.sender;
+}
+// constructors are run only once (not saved onchain!)
+// it uses to initialize a contract
+// it runs when it's deployed 
+// here it initializes the contract with an initial value and defines owner as the person who calls the function
+// msg.sender is person that calls the funciton. so msg.sender inside constructor is the account deploying the code
+
+ function setScore(uint _newScore) public onlyOwner{
+     score = _newScore;
+     emit ScoreSet(_newScore);
+ }
